@@ -1,0 +1,1242 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JC Crochet Flowers | Handmade Crochet Flowers That Last Forever</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'yarn-cream': '#F9F7F2',
+                        'yarn-sage': '#E8E6DC',
+                        'yarn-green': '#8A9A5B',
+                        'yarn-dark': '#2C2C2C',
+                        'yarn-warm': '#D4A373',
+                        'yarn-blush': '#E8D5C4',
+                        'yarn-rose': '#C9A9A6',
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9F7F2; }
+        h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
+
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a373' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .product-card:hover .product-overlay { opacity: 1; }
+        .product-card:hover img { transform: scale(1.05); }
+        .product-card img { transition: transform 0.6s ease; }
+
+        .cart-sidebar {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .cart-sidebar.open { transform: translateX(0); }
+
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .toast {
+            transform: translateY(100px);
+            transition: transform 0.3s ease;
+        }
+        .toast.show { transform: translateY(0); }
+
+        .quantity-btn {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #E8E6DC;
+        }
+        .quantity-btn:hover { background-color: #E8E6DC; }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #2C2C2C;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        .btn-primary {
+            background-color: #2C2C2C;
+            color: white;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        .btn-primary:hover { background-color: #8A9A5B; }
+
+        .btn-secondary {
+            border: 1px solid #2C2C2C;
+            color: #2C2C2C;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        .btn-secondary:hover { background-color: #2C2C2C; color: white; }
+
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+        }
+        .chat-window {
+            width: 380px;
+            height: 520px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            transform: scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .chat-window.open {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: all;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: #FAFAFA;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: messageSlide 0.3s ease;
+        }
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-message.user {
+            background: #2C2C2C;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-message.bot {
+            background: white;
+            color: #2C2C2C;
+            border: 1px solid #E8E6DC;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input-area {
+            padding: 12px 16px;
+            border-top: 1px solid #E8E6DC;
+            background: white;
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input {
+            flex: 1;
+            border: 1px solid #E8E6DC;
+            border-radius: 24px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+        }
+        .chat-input:focus { border-color: #8A9A5B; }
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #8A9A5B;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .chat-send-btn:hover { background: #6B7A47; }
+        .chat-toggle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #8A9A5B;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(138,154,91,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        .chat-toggle-btn:hover { transform: scale(1.1); }
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 14px;
+            background: white;
+            border: 1px solid #E8E6DC;
+            border-radius: 14px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+            margin-bottom: 12px;
+        }
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background: #8A9A5B;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.6); }
+            40% { transform: scale(1); }
+        }
+
+        /* Checkout Modal */
+        .checkout-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .checkout-modal.open { display: flex; }
+        .checkout-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+        }
+        .payment-method-card {
+            border: 2px solid #E8E6DC;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .payment-method-card:hover { border-color: #8A9A5B; }
+        .payment-method-card.selected {
+            border-color: #8A9A5B;
+            background: #F9F7F2;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-yarn-dark antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-yarn-cream/95 backdrop-blur-sm z-50 border-b border-yarn-sage/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-8">
+                    <a href="#" class="font-serif text-2xl font-bold tracking-wide">JC Crochet Flowers</a>
+                    <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase">
+                        <a href="#shop" class="nav-link">Shop</a>
+                        <a href="#collections" class="nav-link">Collections</a>
+                        <a href="#about" class="nav-link">Our Story</a>
+                        <a href="#craft" class="nav-link">Craft</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <button class="hover:text-yarn-green transition-colors"><i class="fas fa-search text-lg"></i></button>
+                    <button onclick="toggleCart()" class="relative hover:text-yarn-green transition-colors">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-yarn-green text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 min-h-screen flex items-center hero-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 fade-in">
+                <p class="text-yarn-green tracking-[0.3em] uppercase text-sm font-medium">Handmade with Love</p>
+                <h1 class="text-5xl md:text-7xl font-serif leading-tight">
+                    Crochet Flowers<br>
+                    <span class="italic text-yarn-green">That Last</span><br>
+                    Forever
+                </h1>
+                <p class="text-gray-600 text-lg leading-relaxed max-w-md">
+                    Each bloom is meticulously hand-crocheted using premium cotton yarn. A timeless gift that never wilts, bringing warmth and poetry to any space.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#shop" class="btn-primary">Shop Now</a>
+                    <a href="#about" class="btn-secondary">Our Story</a>
+                </div>
+                <div class="flex items-center space-x-8 pt-8 text-sm text-gray-500">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-leaf text-yarn-green"></i>
+                        <span>Eco-Friendly</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-hand-holding-heart text-yarn-green"></i>
+                        <span>Handcrafted</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-truck text-yarn-green"></i>
+                        <span>Free US Shipping $50+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+                    <img src="./微信图片_20260415173905_335_220.jpg" 
+                         alt="Pink Crochet Bouquet" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-lg max-w-xs hidden md:block">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <div class="flex text-yarn-warm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm font-medium">4.9/5</span>
+                    </div>
+                    <p class="text-sm text-gray-600">"Absolutely stunning! The details are incredible and it looks so real. Perfect for my desk."</p>
+                    <p class="text-xs text-gray-400 mt-2">— Sarah M., New York</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section id="collections" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-yarn-green tracking-[0.3em] uppercase text-sm mb-4">Collections</p>
+                <h2 class="text-4xl font-serif">Shop by Style</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="group cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden rounded-lg mb-4 relative">
+                        <img src="./微信图片_20260415173905_335_220.jpg" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Pink Romance">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-2xl font-serif mb-1">Pink Romance</h3>
+                            <p class="text-sm opacity-90">Soft & Sweet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden rounded-lg mb-4 relative">
+                        <img src="./微信图片_20260415173906_337_220.jpg" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Lavender Dreams">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-2xl font-serif mb-1">Lavender Dreams</h3>
+                            <p class="text-sm opacity-90">Elegant & Calm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden rounded-lg mb-4 relative">
+                        <img src="./微信图片_20260415173907_338_220.jpg" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Classic Red">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="text-2xl font-serif mb-1">Classic Red</h3>
+                            <p class="text-sm opacity-90">Bold & Passionate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="shop" class="py-20 bg-yarn-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <p class="text-yarn-green tracking-[0.3em] uppercase text-sm mb-4">Shop</p>
+                    <h2 class="text-4xl font-serif">All Products</h2>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm">
+                    <button class="text-yarn-dark border-b-2 border-yarn-dark pb-1">All</button>
+                    <button class="text-gray-500 hover:text-yarn-dark transition-colors">Bouquets</button>
+                    <button class="text-gray-500 hover:text-yarn-dark transition-colors">Single Stems</button>
+                    <button class="text-gray-500 hover:text-yarn-dark transition-colors">Potted</button>
+                    <button class="text-gray-500 hover:text-yarn-dark transition-colors">DIY Kits</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                <!-- Products will be injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Trust Section -->
+    <section class="py-12 bg-white border-y border-yarn-sage/50">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm text-gray-500 mb-6 tracking-widest uppercase">Secure Payment Methods</p>
+            <div class="flex justify-center items-center gap-8 flex-wrap">
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-cc-visa text-3xl"></i>
+                    <span class="text-sm font-medium">Visa</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-cc-mastercard text-3xl"></i>
+                    <span class="text-sm font-medium">Mastercard</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-cc-amex text-3xl"></i>
+                    <span class="text-sm font-medium">Amex</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-cc-discover text-3xl"></i>
+                    <span class="text-sm font-medium">Discover</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-cc-paypal text-3xl"></i>
+                    <span class="text-sm font-medium">PayPal</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-apple text-3xl"></i>
+                    <span class="text-sm font-medium">Apple Pay</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fab fa-google text-3xl"></i>
+                    <span class="text-sm font-medium">Google Pay</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-400 hover:text-yarn-green transition-colors cursor-pointer">
+                    <i class="fas fa-credit-card text-3xl"></i>
+                    <span class="text-sm font-medium">Stripe</span>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-center items-center gap-2 text-xs text-gray-400">
+                <i class="fas fa-lock"></i>
+                <span>256-bit SSL Encryption | PCI DSS Compliant</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / Craft Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="./微信图片_20260415173907_338_220.jpg" 
+                         class="rounded-lg w-full h-64 object-cover" alt="Crafting">
+                    <img src="./微信图片_20260415173906_337_220.jpg" 
+                         class="rounded-lg w-full h-64 object-cover mt-8" alt="Yarn">
+                    <img src="./微信图片_20260415173905_335_220.jpg" 
+                         class="rounded-lg w-full h-64 object-cover -mt-8" alt="Details">
+                    <img src="./微信图片_20260415173907_338_220.jpg" 
+                         class="rounded-lg w-full h-64 object-cover" alt="Finished">
+                </div>
+                <div class="space-y-6">
+                    <p class="text-yarn-green tracking-[0.3em] uppercase text-sm">Our Story</p>
+                    <h2 class="text-4xl font-serif">Stitch by Stitch,<br>Weaving Warmth</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        JC Crochet Flowers was born from a passion for handmade artistry. We believe that in this fast-paced digital age, the warmth of handcraft is more precious than ever.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        Every crochet flower uses premium cotton yarn, taking hours of meticulous handiwork. From color selection to shaping and assembly, we pay attention to every detail to bring you lasting beauty.
+                    </p>
+                    <div class="grid grid-cols-3 gap-8 pt-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-serif text-yarn-green mb-2">100%</div>
+                            <div class="text-sm text-gray-600">Handmade</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-serif text-yarn-green mb-2">50+</div>
+                            <div class="text-sm text-gray-600">Flower Designs</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-serif text-yarn-green mb-2">3h+</div>
+                            <div class="text-sm text-gray-600">Avg. Craft Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-20 bg-yarn-sage/30">
+        <div class="max-w-2xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-serif mb-4">Join Our Crochet Community</h2>
+            <p class="text-gray-600 mb-8">Subscribe for new arrivals, exclusive offers, and free crochet tutorials</p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="event.preventDefault(); showToast('Thanks for subscribing!');">
+                <input type="email" placeholder="Enter your email" 
+                       class="flex-1 px-6 py-3 bg-white border border-yarn-sage focus:outline-none focus:border-yarn-green rounded-none">
+                <button type="submit" class="btn-primary whitespace-nowrap">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-yarn-dark text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div class="space-y-4">
+                    <h3 class="font-serif text-2xl">JC Crochet Flowers</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Handmade crochet flower art<br>
+                        Adding everlasting beauty to your life
+                    </p>
+                    <div class="flex space-x-4 pt-2">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm tracking-widest uppercase mb-6">Shop</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">All Products</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Best Sellers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm tracking-widest uppercase mb-6">Help</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Shipping Info</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Returns & Exchanges</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Care Guide</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm tracking-widest uppercase mb-6">Contact</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-envelope text-xs"></i>
+                            <span>norrishui@gmail.com</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-phone text-xs"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-map-marker-alt text-xs"></i>
+                            <span>Portland, Oregon, USA</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2024 JC Crochet Flowers. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                    <a href="#" class="hover:text-white">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-50 hidden" onclick="toggleCart()"></div>
+    <div id="cart-sidebar" class="cart-sidebar fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-yarn-sage flex justify-between items-center">
+            <h2 class="font-serif text-2xl">Shopping Cart</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-yarn-dark">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <div class="text-center text-gray-500 mt-20">
+                <i class="fas fa-shopping-bag text-4xl mb-4 text-yarn-sage"></i>
+                <p>Your cart is empty</p>
+                <button onclick="toggleCart()" class="mt-4 text-yarn-green hover:underline text-sm">Continue Shopping</button>
+            </div>
+        </div>
+        <div class="p-6 border-t border-yarn-sage bg-yarn-cream">
+            <div class="space-y-3 mb-6">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span id="cart-subtotal" class="font-medium">$0</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Shipping</span>
+                    <span class="font-medium">Free over $50</span>
+                </div>
+                <div class="flex justify-between text-lg font-serif border-t border-yarn-sage pt-3">
+                    <span>Total</span>
+                    <span id="cart-total">$0</span>
+                </div>
+            </div>
+            <button onclick="openCheckout()" class="w-full btn-primary">Proceed to Checkout</button>
+            <div class="mt-4 flex justify-center gap-3">
+                <i class="fab fa-cc-visa text-gray-400 text-xl"></i>
+                <i class="fab fa-cc-mastercard text-gray-400 text-xl"></i>
+                <i class="fab fa-cc-amex text-gray-400 text-xl"></i>
+                <i class="fab fa-cc-paypal text-gray-400 text-xl"></i>
+                <i class="fab fa-apple text-gray-400 text-xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="checkout-modal">
+        <div class="checkout-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-serif text-2xl">Checkout</h2>
+                <button onclick="closeCheckout()" class="text-gray-500 hover:text-yarn-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Order Summary -->
+                <div class="bg-yarn-cream p-4 rounded-lg">
+                    <h3 class="font-medium mb-3">Order Summary</h3>
+                    <div id="checkout-items" class="space-y-2 text-sm"></div>
+                    <div class="border-t border-yarn-sage mt-3 pt-3 flex justify-between font-serif">
+                        <span>Total</span>
+                        <span id="checkout-total">$0</span>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div>
+                    <h3 class="font-medium mb-3">Select Payment Method</h3>
+                    <div class="space-y-3" id="payment-methods">
+                        <div class="payment-method-card selected" onclick="selectPayment(this, 'card')">
+                            <i class="fas fa-credit-card text-yarn-green text-xl"></i>
+                            <div>
+                                <div class="font-medium">Credit / Debit Card</div>
+                                <div class="text-xs text-gray-500">Visa, Mastercard, Amex, Discover</div>
+                            </div>
+                        </div>
+                        <div class="payment-method-card" onclick="selectPayment(this, 'paypal')">
+                            <i class="fab fa-paypal text-blue-600 text-xl"></i>
+                            <div>
+                                <div class="font-medium">PayPal</div>
+                                <div class="text-xs text-gray-500">Pay with your PayPal account</div>
+                            </div>
+                        </div>
+                        <div class="payment-method-card" onclick="selectPayment(this, 'apple')">
+                            <i class="fab fa-apple text-black text-xl"></i>
+                            <div>
+                                <div class="font-medium">Apple Pay</div>
+                                <div class="text-xs text-gray-500">Fast, secure checkout</div>
+                            </div>
+                        </div>
+                        <div class="payment-method-card" onclick="selectPayment(this, 'google')">
+                            <i class="fab fa-google text-red-500 text-xl"></i>
+                            <div>
+                                <div class="font-medium">Google Pay</div>
+                                <div class="text-xs text-gray-500">Quick and easy payment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Form (shown when card selected) -->
+                <div id="card-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Card Number</label>
+                        <input type="text" placeholder="1234 5678 9012 3456" 
+                               class="w-full px-4 py-2 border border-yarn-sage rounded-lg focus:outline-none focus:border-yarn-green">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Expiry Date</label>
+                            <input type="text" placeholder="MM/YY" 
+                                   class="w-full px-4 py-2 border border-yarn-sage rounded-lg focus:outline-none focus:border-yarn-green">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">CVC</label>
+                            <input type="text" placeholder="123" 
+                                   class="w-full px-4 py-2 border border-yarn-sage rounded-lg focus:outline-none focus:border-yarn-green">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Name on Card</label>
+                        <input type="text" placeholder="John Doe" 
+                               class="w-full px-4 py-2 border border-yarn-sage rounded-lg focus:outline-none focus:border-yarn-green">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <i class="fas fa-lock"></i>
+                    <span>Your payment information is encrypted and secure. We never store your full card details.</span>
+                </div>
+
+                <button onclick="processPayment()" class="w-full btn-primary" id="pay-btn">
+                    Pay $<span id="pay-amount">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+            <div class="grid md:grid-cols-2">
+                <div class="aspect-square bg-yarn-cream">
+                    <img id="modal-img" src="" class="w-full h-full object-cover" alt="">
+                </div>
+                <div class="p-8 md:p-12 flex flex-col justify-center relative">
+                    <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-yarn-dark md:hidden">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                    <p id="modal-category" class="text-yarn-green tracking-[0.2em] uppercase text-xs mb-2"></p>
+                    <h2 id="modal-title" class="text-3xl font-serif mb-4"></h2>
+                    <p id="modal-price" class="text-2xl font-serif text-yarn-green mb-6"></p>
+                    <p id="modal-desc" class="text-gray-600 leading-relaxed mb-8"></p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <i class="fas fa-check text-yarn-green"></i>
+                            <span>100% Premium Cotton Yarn</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <i class="fas fa-check text-yarn-green"></i>
+                            <span>Washable & Shape-Retaining</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <i class="fas fa-check text-yarn-green"></i>
+                            <span>Gift Packaging Included</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <i class="fas fa-check text-yarn-green"></i>
+                            <span>Free US Shipping over $50</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4 mb-8">
+                        <span class="text-sm text-gray-600">Quantity</span>
+                        <div class="flex items-center border border-yarn-sage">
+                            <button onclick="adjustModalQty(-1)" class="quantity-btn">-</button>
+                            <input id="modal-qty" type="number" value="1" min="1" class="w-12 text-center border-x border-yarn-sage py-1 focus:outline-none">
+                            <button onclick="adjustModalQty(1)" class="quantity-btn">+</button>
+                        </div>
+                    </div>
+
+                    <button id="modal-add-btn" class="w-full btn-primary">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-yarn-dark text-white px-8 py-4 rounded-lg shadow-lg z-50 flex items-center space-x-3">
+        <i class="fas fa-check-circle text-yarn-green"></i>
+        <span id="toast-message">Added to cart</span>
+    </div>
+
+    <!-- AI Chat Widget -->
+    <div class="chat-widget">
+        <div id="chat-window" class="chat-window">
+            <div class="bg-yarn-green text-white p-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium">JC Assistant</div>
+                        <div class="text-xs opacity-80">AI Customer Service</div>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-white/80 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-message bot">
+                    Hello! I'm your JC Crochet Flowers assistant. How can I help you today? I can help with:
+                    <ul class="mt-2 space-y-1 text-sm">
+                        <li>• Product recommendations</li>
+                        <li>• Order & shipping questions</li>
+                        <li>• Care instructions</li>
+                        <li>• Custom orders</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." 
+                       onkeypress="if(event.key==='Enter')sendMessage()">
+                <button onclick="sendMessage()" class="chat-send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="chat-toggle-btn" id="chat-toggle">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <script>
+        // Product Data - Using uploaded images
+        const products = [
+            {
+                id: 1,
+                name: "Pink Romance Bouquet",
+                category: "Bouquet",
+                price: 39.99,
+                image: "./微信图片_20260415173905_335_220.jpg",
+                desc: "A stunning hand-crocheted bouquet featuring pink roses, lilies, and daisies. Wrapped in elegant pink paper with a 'Best Wishes' gift card. Perfect for birthdays, anniversaries, or just because. Each flower is meticulously crafted with premium cotton yarn."
+            },
+            {
+                id: 2,
+                name: "Lavender Dreams Bouquet",
+                category: "Bouquet",
+                price: 39.99,
+                image: "./微信图片_20260415173906_337_220.jpg",
+                desc: "An elegant purple and white lily bouquet with delicate accents. Wrapped in lavender paper with 'Just For You' ribbon. This sophisticated arrangement brings calm and beauty to any room. Includes a gift bag and greeting card."
+            },
+            {
+                id: 3,
+                name: "Classic Red Rose Bouquet",
+                category: "Bouquet",
+                price: 39.99,
+                image: "./微信图片_20260415173907_338_220.jpg",
+                desc: "Bold and passionate red roses with matching red accents and white baby's breath. Wrapped in vintage kraft paper with 'Love Eternal' ribbon. The ultimate expression of love that never fades. Includes a black gift card."
+            },
+            {
+                id: 4,
+                name: "Pink Romance + Vase",
+                category: "Set",
+                price: 85,
+                image: "./微信图片_20260415173905_335_220.jpg",
+                desc: "The complete Pink Romance bouquet with a beautiful ceramic vase. Ready to display immediately. The perfect gift for housewarmings or office decor."
+            },
+            {
+                id: 5,
+                name: "Lavender Dreams + Vase",
+                category: "Set",
+                price: 89,
+                image: "./微信图片_20260415173906_337_220.jpg",
+                desc: "The complete Lavender Dreams bouquet with a sleek white ceramic vase. An elegant centerpiece for dining tables or entryways."
+            },
+            {
+                id: 6,
+                name: "Classic Red + Vase",
+                category: "Set",
+                price: 82,
+                image: "./微信图片_20260415173907_338_220.jpg",
+                desc: "The complete Classic Red bouquet with a classic glass vase. A timeless romantic gift that will be cherished for years."
+            }
+        ];
+
+        let cart = [];
+        let currentModalProduct = null;
+        let selectedPaymentMethod = 'card';
+
+        // Chat Knowledge Base
+        const chatResponses = {
+            'shipping': "We offer free standard shipping on all US orders over $50! Standard delivery takes 5-7 business days. Express shipping (2-3 days) is available for $12. We ship to all 50 states.",
+            'delivery': "We offer free standard shipping on all US orders over $50! Standard delivery takes 5-7 business days. Express shipping (2-3 days) is available for $12.",
+            'return': "We accept returns within 30 days of delivery. Items must be unused and in original packaging. Contact us at norrishui@gmail.com to initiate a return. Refunds are processed within 5-7 business days.",
+            'refund': "We accept returns within 30 days of delivery. Items must be unused and in original packaging. Refunds are processed within 5-7 business days after we receive the item.",
+            'care': "Our crochet flowers are easy to care for! Simply dust them gently with a soft brush or use a hair dryer on cool setting. If needed, you can hand wash with mild soap and lay flat to dry. They are colorfast and shape-retaining.",
+            'wash': "You can gently hand wash our flowers with mild soap if needed. Lay them flat to dry. Avoid machine washing. They are made with colorfast premium cotton yarn.",
+            'custom': "Yes, we accept custom orders! Whether you want a specific color scheme, flower type, or arrangement size, we'd love to create something unique for you. Email us at norrishui@gmail.com with your request. Custom orders typically take 2-3 weeks.",
+            'personalized': "Yes, we accept custom orders! Email us at norrishui@gmail.com with your request. Custom orders typically take 2-3 weeks.",
+            'payment': "We accept all major credit cards (Visa, Mastercard, Amex, Discover), PayPal, Apple Pay, and Google Pay. All transactions are secured with 256-bit SSL encryption.",
+            'pay': "We accept Visa, Mastercard, Amex, Discover, PayPal, Apple Pay, and Google Pay. All transactions are secured with 256-bit SSL encryption.",
+            'price': "Our bouquets are $39.99 each. Vase sets start at $58.99. Free shipping on orders over $50!",
+            'cost': "Our bouquets are $39.99 each. Vase sets start at $58.99. Free US shipping on orders over $50!",
+            'gift': "All our bouquets come beautifully gift-wrapped with a greeting card included. We can also add a personalized message at no extra cost. Perfect for birthdays, anniversaries, weddings, Mother's Day, or any special occasion!",
+            'present': "All bouquets come gift-wrapped with a greeting card. We can add personalized messages at no extra cost. Perfect for any occasion!",
+            'material': "We use 100% premium cotton yarn for all our flowers. It's soft, durable, colorfast, and eco-friendly. No synthetic materials - just pure cotton that feels as good as it looks.",
+            'yarn': "We use 100% premium cotton yarn. It's soft, durable, colorfast, and eco-friendly.",
+            'size': "Our standard bouquets are approximately 12-14 inches tall and 8-10 inches wide. Each bouquet contains 8-12 individual flowers and greenery. Vases in our sets are 6 inches tall.",
+            'dimension': "Standard bouquets are approximately 12-14 inches tall. Each contains 8-12 individual flowers.",
+            'time': "Each bouquet takes 3-4 hours of handiwork to complete. Our artisans carefully crochet each petal, assemble the flowers, and arrange them into beautiful bouquets.",
+            'handmade': "Every single flower is 100% handmade by our skilled artisans. Each bouquet takes 3-4 hours of meticulous work. No machines involved - just pure craftsmanship.",
+            'discount': "Sign up for our newsletter to get 10% off your first order! We also run seasonal sales. Follow us on Instagram for exclusive discount codes.",
+            'coupon': "Sign up for our newsletter to get 10% off your first order! Follow us on Instagram for exclusive codes.",
+            'wholesale': "Yes, we offer wholesale pricing for orders of 10+ bouquets. Contact us at norrishui@gmail.com for wholesale inquiries and pricing.",
+            'bulk': "We offer wholesale pricing for orders of 10+ bouquets. Email us for details.",
+            'track': "Once your order ships, you'll receive an email with a tracking number. You can also track your order by logging into your account or contacting us with your order number.",
+            'order': "You can check your order status by logging into your account. We'll also send you email updates at each stage - confirmation, processing, shipped, and delivered.",
+            'wedding': "Our flowers are perfect for weddings! They make beautiful bouquets, centerpieces, and decor that last forever. We offer bridal party discounts and can create custom colors to match your theme. Contact us for wedding packages.",
+            'bridal': "Our flowers are perfect for weddings! We offer bridal party discounts and custom colors. Contact us for wedding packages.",
+            'hello': "Hello! Welcome to JC Crochet Flowers. How can I help you today?",
+            'hi': "Hi there! Welcome to JC Crochet Flowers. What can I assist you with?",
+            'hey': "Hey! How can I help you today?",
+            'thank': "You're very welcome! Is there anything else I can help you with?",
+            'thanks': "You're very welcome! Let me know if you need anything else.",
+            'bye': "Goodbye! Have a wonderful day. Feel free to come back anytime!",
+            'help': "I can help you with product info, shipping, returns, care instructions, custom orders, and more. What would you like to know?"
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+        });
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[3/4] overflow-hidden relative bg-yarn-cream">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                        <div class="product-overlay absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                            <button onclick="openModal(${product.id})" class="bg-white text-yarn-dark w-12 h-12 rounded-full flex items-center justify-center hover:bg-yarn-green hover:text-white transition-colors" title="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="bg-white text-yarn-dark w-12 h-12 rounded-full flex items-center justify-center hover:bg-yarn-green hover:text-white transition-colors" title="Add to Cart">
+                                <i class="fas fa-shopping-bag"></i>
+                            </button>
+                        </div>
+                        ${product.category === 'Set' ? '<span class="absolute top-4 left-4 bg-yarn-green text-white text-xs px-3 py-1 tracking-wider">BEST VALUE</span>' : ''}
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-yarn-green tracking-widest uppercase mb-2">${product.category}</p>
+                        <h3 class="font-serif text-lg mb-2 group-hover:text-yarn-green transition-colors cursor-pointer" onclick="openModal(${product.id})">${product.name}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-serif">$${product.price}</span>
+                            <button onclick="addToCart(${product.id})" class="text-sm text-gray-500 hover:text-yarn-green transition-colors underline decoration-yarn-sage hover:decoration-yarn-green">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            currentModalProduct = product;
+            document.getElementById('modal-img').src = product.image;
+            document.getElementById('modal-category').textContent = product.category;
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = `$${product.price}`;
+            document.getElementById('modal-desc').textContent = product.desc;
+            document.getElementById('modal-qty').value = 1;
+            document.getElementById('modal-add-btn').onclick = () => {
+                const qty = parseInt(document.getElementById('modal-qty').value);
+                addToCart(product.id, qty);
+                closeModal();
+            };
+
+            document.getElementById('product-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function adjustModalQty(delta) {
+            const input = document.getElementById('modal-qty');
+            const newVal = parseInt(input.value) + delta;
+            if (newVal >= 1) input.value = newVal;
+        }
+
+        function addToCart(productId, qty = 1) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({ ...product, qty });
+            }
+
+            updateCartUI();
+            showToast(`Added ${qty} ${product.name} to cart`);
+
+            const cartBtn = document.querySelector('.fa-shopping-bag').parentElement;
+            cartBtn.classList.add('scale-110');
+            setTimeout(() => cartBtn.classList.remove('scale-110'), 200);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) removeFromCart(productId);
+                else updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cart-count');
+            const itemsEl = document.getElementById('cart-items');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            if (totalQty > 0) {
+                countEl.textContent = totalQty;
+                countEl.classList.remove('hidden');
+            } else {
+                countEl.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = `
+                    <div class="text-center text-gray-500 mt-20">
+                        <i class="fas fa-shopping-bag text-4xl mb-4 text-yarn-sage"></i>
+                        <p>Your cart is empty</p>
+                        <button onclick="toggleCart()" class="mt-4 text-yarn-green hover:underline text-sm">Continue Shopping</button>
+                    </div>
+                `;
+            } else {
+                itemsEl.innerHTML = cart.map(item => `
+                    <div class="flex space-x-4 fade-in">
+                        <img src="${item.image}" class="w-20 h-20 object-cover rounded bg-yarn-cream" alt="${item.name}">
+                        <div class="flex-1">
+                            <h4 class="font-serif text-sm mb-1">${item.name}</h4>
+                            <p class="text-yarn-green text-sm mb-2">$${item.price}</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center border border-yarn-sage">
+                                    <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center hover:bg-yarn-sage text-xs">-</button>
+                                    <span class="w-8 text-center text-xs">${item.qty}</span>
+                                    <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center hover:bg-yarn-sage text-xs">+</button>
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 text-xs underline">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            totalEl.textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+                document.body.style.overflow = '';
+            } else {
+                overlay.classList.remove('hidden');
+                setTimeout(() => sidebar.classList.add('open'), 10);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Checkout Functions
+        function openCheckout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty');
+                return;
+            }
+            toggleCart();
+
+            const modal = document.getElementById('checkout-modal');
+            const itemsDiv = document.getElementById('checkout-items');
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            itemsDiv.innerHTML = cart.map(item => `
+                <div class="flex justify-between">
+                    <span>${item.name} x${item.qty}</span>
+                    <span>$${(item.price * item.qty).toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('checkout-total').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('pay-amount').textContent = total.toFixed(2);
+
+            modal.classList.add('open');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.remove('open');
+        }
+
+        function selectPayment(element, method) {
+            document.querySelectorAll('.payment-method-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPaymentMethod = method;
+
+            const cardForm = document.getElementById('card-form');
+            if (method === 'card') {
+                cardForm.style.display = 'block';
+            } else {
+                cardForm.style.display = 'none';
+            }
+        }
+
+        function processPayment() {
+            const btn = document.getElementById('pay-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                closeCheckout();
+                cart = [];
+                updateCartUI();
+                showToast('Payment successful! Order confirmation sent to your email.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Chat Functions
+        function toggleChat() {
+            const window = document.getElementById('chat-window');
+            const toggle = document.getElementById('chat-toggle');
+
+            if (window.classList.contains('open')) {
+                window.classList.remove('open');
+                toggle.style.display = 'flex';
+            } else {
+                window.classList.add('open');
+                toggle.style.display = 'none';
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Generate response
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = generateChatResponse(message);
+                addChatMessage(response, 'bot');
+            }, 1000 + Math.random() * 1000);
+        }
+
+        function addChatMessage(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            messageDiv.innerHTML = text;
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const container = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'typing-indicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            container.appendChild(typingDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
+        function generateChatResponse(message) {
+            const lowerMsg = message.toLowerCase();
+
+            // Check for keywords
+            for (const [keyword, response] of Object.entries(chatResponses)) {
+                if (lowerMsg.includes(keyword)) {
+                    return response;
+                }
+            }
+
+            // Product recommendations
+            if (lowerMsg.includes('pink') || lowerMsg.includes('romance')) {
+                return "Our Pink Romance Bouquet ($39.99) is one of our most popular items! It features beautiful pink roses, lilies, and daisies. Would you like to add it to your cart?";
+            }
+            if (lowerMsg.includes('purple') || lowerMsg.includes('lavender')) {
+                return "The Lavender Dreams Bouquet ($39.99) is absolutely stunning with its elegant purple and white lilies. It comes with a gift bag and card. Shall I help you order one?";
+            }
+            if (lowerMsg.includes('red') || lowerMsg.includes('rose')) {
+                return "Our Classic Red Rose Bouquet ($39.99) is perfect for expressing love and passion. Wrapped in vintage kraft paper, it's a timeless gift. Interested?";
+            }
+            if (lowerMsg.includes('vase') || lowerMsg.includes('set')) {
+                return "We have beautiful bouquet + vase sets starting at $82. They come ready to display - perfect for gifting! Which color would you prefer?";
+            }
+
+            // Default responses
+            const defaults = [
+                "I'm not sure I understand. Could you rephrase that? I can help with shipping, returns, product info, care instructions, or custom orders.",
+                "I'd be happy to help! Could you tell me more about what you're looking for? I can assist with products, orders, or general questions.",
+                "Let me connect you with a human representative for this specific question. In the meantime, is there anything else I can help with regarding our products or policies?"
+            ];
+
+            return defaults[Math.floor(Math.random() * defaults.length)];
+        }
+
+        // Close modal on outside click
+        document.getElementById('product-modal').addEventListener('click', closeModal);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
